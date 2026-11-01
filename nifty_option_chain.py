@@ -69,8 +69,7 @@ def fetch_option_chain():
             json.dump(output, f, indent=4)
         print("Nifty Option Chain data successfully updated.")
     except Exception as e:
-        print(f"Error fetching option chain: {e}")
+        print("NSE request failed:", e)
 
 if __name__ == "__main__":
     fetch_option_chain()
-  
