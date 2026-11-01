@@ -6,4 +6,3 @@ if __name__ == "__main__":
     run_historical_tracker()
     fetch_option_chain()
     print("Master pipeline execution complete.")
-  
