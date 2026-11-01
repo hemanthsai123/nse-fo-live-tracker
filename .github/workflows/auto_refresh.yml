@@ -2,9 +2,8 @@ name: Auto-Refresh NSE F&O Pipeline
 
 on:
   schedule:
-    # Runs automatically every 5 minutes around the clock
     - cron: '*/5 * * * *'
-  workflow_dispatch: # Allows manual testing anytime from GitHub
+  workflow_dispatch:
 
 jobs:
   run-pipeline:
@@ -34,4 +33,3 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add index.html stock_history_db.json stock_30day_analysis.json nifty_option_chain.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update dashboard & market data: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" && git push)
-          
