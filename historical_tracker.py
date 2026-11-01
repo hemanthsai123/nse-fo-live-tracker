@@ -21,10 +21,14 @@ OUTPUT_FILE = "stock_30day_analysis.json"
 def fetch_live_data():
     session = requests.Session()
     session.headers.update(HEADERS)
-    session.get("https://www.nseindia.com", timeout=10)
-    resp = session.get(OI_SPURTS_URL, timeout=10)
-    resp.raise_for_status()
-    return resp.json().get("data", [])
+    try:
+        session.get("https://www.nseindia.com", timeout=10)
+        resp = session.get(OI_SPURTS_URL, timeout=10)
+        resp.raise_for_status()
+        return resp.json().get("data", [])
+    except Exception as e:
+        print("NSE request failed:", e)
+        return []
 
 def load_database():
     if os.path.exists(DB_FILE):
@@ -40,10 +44,9 @@ def save_database(db):
         json.dump(db, f, indent=4)
 
 def run_historical_tracker():
-    try:
-        raw_data = fetch_live_data()
-    except Exception as e:
-        print(f"Error fetching live NSE data: {e}")
+    raw_data = fetch_live_data()
+    if not raw_data:
+        print("No live data retrieved. Skipping update cycle.")
         return
 
     db = load_database()
@@ -129,4 +132,3 @@ def run_historical_tracker():
 
 if __name__ == "__main__":
     run_historical_tracker()
-  
