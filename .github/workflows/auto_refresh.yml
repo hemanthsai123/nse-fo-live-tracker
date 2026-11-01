@@ -31,5 +31,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html stock_history_db.json stock_30day_analysis.json nifty_option_chain.json
+          
+          # Only add files that actually exist to prevent pathspec errors
+          git add index.html stock_history_db.json stock_30day_analysis.json nifty_option_chain.json 2>/dev/null || true
+          
           git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update dashboard & market data: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" && git push)
